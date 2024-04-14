@@ -25,6 +25,25 @@ void generate_matrix(double* matrix, size_t n) {
     }
 }
 
+void write_runtime_data(int N, double runtime) {
+    char filename[] = "Runtimes_v1.txt";
+    FILE* ptr;
+    ptr = fopen(filename, "a");
+
+    if (ptr == NULL) {
+        printf("Error opening file.\n");
+        exit(1);
+    }
+
+    fprintf(ptr, "%d", N);
+    fprintf(ptr, "%s", " ");
+    fprintf(ptr, "%f", runtime);
+    fprintf(ptr, "%s", "\n");
+
+    fclose(ptr);
+}
+
+
 int main(int argc, char* argv[]) {
     if (argc != 2) {
         printf("Número incorreto de parâmetros passados. Encerrando programa.\n");
@@ -41,7 +60,17 @@ int main(int argc, char* argv[]) {
         generate_matrix(A, n);
         generate_matrix(B, n);
 
+        struct timespec start, finish;
+        double elapsed;
+        clock_gettime(CLOCK_MONOTONIC, &start);
+
         dgemm(n, A, B, C);
+
+        clock_gettime(CLOCK_MONOTONIC, &finish);
+        elapsed = (finish.tv_sec - start.tv_sec);
+        elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
+
+        write_runtime_data(n, elapsed);
 
         free(A);
         free(B);
