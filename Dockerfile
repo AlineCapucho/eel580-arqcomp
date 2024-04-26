@@ -10,6 +10,6 @@ RUN apt-get -y update && \
 
 RUN gcc -o ./dgemm/chapter_3_v1 ./dgemm/chapter_3_v1.c ./dgemm/utils.c -lm -mavx
 
-RUN gcc -o ./dgemm/chapter_3_v2 ./dgemm/chapter_3_v2.c ./dgemm/utils.c -lm -mavx
+RUN gcc -o ./dgemm/chapter_3_v2 ./dgemm/chapter_3_v2.c ./dgemm/utils.c -lm -march=native -mavx
 
 COPY . .
