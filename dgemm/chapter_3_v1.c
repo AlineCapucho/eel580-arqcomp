@@ -18,37 +18,33 @@ void dgemm (size_t n, double* A, double* B, double* C) {
 }
 
 int main(int argc, char* argv[]) {
-    if (argc != 2) {
-        printf("Número incorreto de parâmetros passados. Encerrando programa.\n");
-        return -1;
-    }
-    else {
-        size_t n = atoi(argv[1]);
+  if (argc != 2) {
+    printf("Número incorreto de parâmetros passados. Encerrando programa.\n");
+    return -1;
+  }
+  else {
+    size_t n = atoi(argv[1]);
 
-        // Initialize matrixes
-        double *A = malloc(sizeof(double)*n*n);
-        double *B = malloc(sizeof(double)*n*n);
-        double *C = malloc(sizeof(double)*n*n);
-        
-        generate_matrix(A, n);
-        generate_matrix(B, n);
+    // Initialize matrixes
+    double *A = malloc(sizeof(double)*n*n);
+    double *B = malloc(sizeof(double)*n*n);
+    double *C = malloc(sizeof(double)*n*n);
+    
+    generate_matrix(A, n);
+    generate_matrix(B, n);
 
-        struct timespec start, finish;
-        double elapsed;
-        clock_gettime(CLOCK_MONOTONIC, &start);
+    clock_t start = clock();
+    dgemm(n, A, B, C);
+    clock_t end = clock();
 
-        dgemm(n, A, B, C);
+    double elapsed = (double)(end - start)/CLOCKS_PER_SEC;;
 
-        clock_gettime(CLOCK_MONOTONIC, &finish);
-        elapsed = (finish.tv_sec - start.tv_sec);
-        elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
+    write_runtime_data(n, elapsed, "Runtimes_v1.txt");
 
-        write_runtime_data(n, elapsed, "Runtimes_v1.txt");
+    free(A);
+    free(B);
+    free(C);
+  }
 
-        free(A);
-        free(B);
-        free(C);
-    }
-
-    return 0;
+  return 0;
 }
