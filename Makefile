@@ -1,8 +1,8 @@
 compile-dgemm-v1:
-	gcc -o ./dgemm/chapter_3_v1 ./dgemm/chapter_3_v1.c ./dgemm/utils.c -lm
+	gcc -o ./dgemm/chapter_3_v1 ./dgemm/chapter_3_v1.c ./dgemm/utils.c
 
 compile-dgemm-v2:
-	gcc -o ./dgemm/chapter_3_v2 ./dgemm/chapter_3_v2.c ./dgemm/utils.c -lm -march=native
+	gcc -mavx -o ./dgemm/chapter_3_v2 ./dgemm/chapter_3_v2.c ./dgemm/utils.c
 
 docker-build:
 	docker build -t dgemm .
