@@ -10,6 +10,9 @@ compile-dgemm-v3:
 compile-dgemm-v4:
 	gcc -mavx -o ./dgemm/chapter_5_v4 ./dgemm/chapter_5_v4.c ./dgemm/utils.c
 
+compile-dgemm-v5:
+	gcc -mavx -o ./dgemm/chapter_6_v5 ./dgemm/chapter_6_v5.c ./dgemm/utils.c
+
 docker-build:
 	docker build -t dgemm .
 
