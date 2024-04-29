@@ -32,6 +32,11 @@ int main(int argc, char* argv[]) {
     A = (double *)malloc(sizeof(double)*n*n);
     B = (double *)malloc(sizeof(double)*n*n);
     C = (double *)malloc(sizeof(double)*n*n);
+
+    if (A == NULL || B == NULL || C == NULL) {
+      printf("Erro na alocação de memória. Encerrando programa.\n");
+      return -1;
+    }
     
     generate_matrix(A, n);
     generate_matrix(B, n);

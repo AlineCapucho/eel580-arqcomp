@@ -9,6 +9,7 @@
 
 //dgemm code extracted from textbook chapter 4 (going faster)
 void dgemm(int n, double* A, double* B, double* C) {
+  printf("Entrou no dgemm.\n");
   for (int i = 0; i < n; i+=UNROLL*4)
     for (int j = 0; j < n; j++) {
       __m256d c[4];
@@ -39,7 +40,12 @@ int main(int argc, char* argv[]) {
     A = (double *)malloc(sizeof(double)*n*n);
     B = (double *)malloc(sizeof(double)*n*n);
     C = (double *)malloc(sizeof(double)*n*n);
-    
+
+    if (A == NULL || B == NULL || C == NULL) {
+      printf("Erro na alocação de memória. Encerrando programa.\n");
+      return -1;
+    }
+
     generate_matrix(A, n);
     generate_matrix(B, n);
 
@@ -56,5 +62,5 @@ int main(int argc, char* argv[]) {
     free(C);
   }
 
-  return 0;
+    return 0;
 }
