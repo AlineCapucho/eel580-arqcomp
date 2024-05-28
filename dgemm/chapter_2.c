@@ -5,24 +5,15 @@
 #include <x86intrin.h>
 #include "utils.h"
 
-#define UNROLL (4)
-
-//dgemm code extracted from textbook chapter 4 (going faster)
-void dgemm(int n, double* A, double* B, double* C) {
-  printf("Entrou no dgemm.\n");
-  for (int i = 0; i < n; i+=UNROLL*4)
-    for (int j = 0; j < n; j++) {
-      __m256d c[4];
-      for (int x; x < UNROLL; x++)
-        c[x] = _mm256_load_pd(C+i+x*4+j*n);
-      for (int k = 0; k < n; k++) {
-        __m256d b = _mm256_broadcast_sd(B+k+j*n);
-        for (int x; x < UNROLL; x++)
-          c[x] = _mm256_add_pd(c[x],
-          _mm256_mul_pd(_mm256_load_pd(A+n*k+x*4+i), b));
-      }
-      for (int x; x < UNROLL; x++)
-        _mm256_store_pd(C+i+x*4+j*n, c[x]);
+void dgemm(size_t n, double* A, double* B, double* C) {
+  for (size_t i = 0; i < n; i+=4)
+    for (size_t j = 0; j < n; j++) {
+      __m256d c0 = _mm256_load_pd(C+i+j*n);
+      for (size_t k = 0; k < n; k++)
+        c0 = _mm256_add_pd(c0,
+        _mm256_mul_pd(_mm256_load_pd(A+i+k*n),
+        _mm256_broadcast_sd(B+k+j*n)));
+      _mm256_store_pd(C+i+j*n, c0);
     }
 }
 
@@ -36,7 +27,6 @@ int main(int argc, char* argv[]) {
 
     double *A, *B, *C;
 
-    // Initialize matrixes
     A = (double *)malloc(sizeof(double)*n*n);
     B = (double *)malloc(sizeof(double)*n*n);
     C = (double *)malloc(sizeof(double)*n*n);
@@ -45,7 +35,7 @@ int main(int argc, char* argv[]) {
       printf("Erro na alocação de memória. Encerrando programa.\n");
       return -1;
     }
-
+    
     generate_matrix(A, n);
     generate_matrix(B, n);
 
@@ -55,12 +45,12 @@ int main(int argc, char* argv[]) {
 
     double elapsed = (double)(end - start)/CLOCKS_PER_SEC;;
 
-    write_runtime_data(n, elapsed, "Runtimes_v3.txt");
+    write_runtime_data(n, elapsed, "Runtimes_v2.txt");
 
     free(A);
     free(B);
     free(C);
   }
 
-    return 0;
+  return 0;
 }

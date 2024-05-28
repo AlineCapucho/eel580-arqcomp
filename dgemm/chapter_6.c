@@ -22,10 +22,9 @@ void do_block(int n, int si, int sj, int sk, double* A, double* B, double* C) {
       }
       for (int x; x < UNROLL; x++)
         _mm256_store_pd(C+i+x*4+j*n, c[x]);
-    }
+    };
 }
 
-//dgemm code extracted from textbook chapter 6 (going faster)
 void dgemm(int n, double* A, double* B, double* C) {
 #pragma omp parallel for
   for (int sj = 0; sj < n; sj += BLOCKSIZE)
@@ -44,7 +43,6 @@ int main(int argc, char* argv[]) {
 
     double *A, *B, *C;
 
-    // Initialize matrixes
     A = (double *)malloc(sizeof(double)*n*n);
     B = (double *)malloc(sizeof(double)*n*n);
     C = (double *)malloc(sizeof(double)*n*n);

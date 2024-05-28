@@ -4,15 +4,14 @@
 #include <time.h>
 #include "utils.h"
 
-// dgemm code extracted from textbook chapter 3 (going faster)
 void dgemm (size_t n, double* A, double* B, double* C) {
   for (size_t i = 0; i < n; ++i) {
     for (size_t j = 0; j < n; ++j) {
-      double cij = C[i + j*n]; //cij = C[i][j]
+      double cij = C[i + j*n];
       for (size_t k = 0; k < n; k++) {
-        cij += A[i + k*n] * B[k + j*n]; // *cij += A[i][k] * B[k][j]
+        cij += A[i + k*n] * B[k + j*n];
       }
-      C[i+j*n] = cij; // C[i][j] = cij
+      C[i+j*n] = cij;
     }
   }
 }
@@ -25,7 +24,6 @@ int main(int argc, char* argv[]) {
   else {
     size_t n = atoi(argv[1]);
 
-    // Initialize matrixes
     double *A = malloc(sizeof(double)*n*n);
     double *B = malloc(sizeof(double)*n*n);
     double *C = malloc(sizeof(double)*n*n);
