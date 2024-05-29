@@ -2,7 +2,6 @@ import numpy as np
 import time
 import sys
 
-
 def dgemm(n, A, B):
     C = np.zeros((n, n))
     for i in range(n):
