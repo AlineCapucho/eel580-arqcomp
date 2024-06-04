@@ -3,7 +3,7 @@ import time
 import sys
 
 def dgemm(n, A, B):
-    C = np.zeros((n, n))
+    C = np.random.rand(n, n)
     for i in range(n):
         for j in range(n):
             for k in range(n):
@@ -12,8 +12,8 @@ def dgemm(n, A, B):
     return C
 
 def main(n):
-    A = np.zeros((n, n))
-    B = np.zeros((n, n))
+    A = np.random.rand(n, n)
+    B = np.random.rand(n, n)
 
     start_time = time.time()  # Registrar o tempo inicial
     C = dgemm(n, A, B)
