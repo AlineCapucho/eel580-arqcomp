@@ -141,14 +141,14 @@ BEGIN
 		Carry(i) &lt;= (A_i(i-1) and B(i-1)) or ((A_i(i-1) xor B(i-1)) and Carry(i-1));
 	end generate GERARCARRY3;
 
-	Carry(12) &lt;= mode_i when (vecSize_i = "00") ELSE
+	Carry(12) &lt;= mode_i when (vecSize_i = "00") else
 		(A_i(11) and B(11)) or ((A_i(11) xor B(11)) and Carry(11));
 
 	GERARCARRY4: for i in 13 to 15 generate
 		Carry(i) &lt;= (A_i(i-1) and B(i-1)) or ((A_i(i-1) xor B(i-1)) and Carry(i-1));
 	end generate GERARCARRY4;
 
-	Carry(16) &lt;= mode_i when (vecSize_i = "00" or vecSize_i = "01" or vecSize_i = "10") ELSE
+	Carry(16) &lt;= mode_i when (vecSize_i = "00" or vecSize_i = "01" or vecSize_i = "10") else
 		(A_i(15) and B(15)) or ((A_i(15) xor B(15)) and Carry(15));
 
 	GERARCARRY5: for i in 17 to 19 generate
